@@ -237,7 +237,7 @@ export default function StarChart({ onSelectWork }: StarChartProps) {
     ];
 
     return { allStars, nebulae, constellations, constData };
-  });
+  }, []);
 
   // 当前可见星（在屏幕范围内的）
   // 为了方便 hover 检测，我们直接用全部星

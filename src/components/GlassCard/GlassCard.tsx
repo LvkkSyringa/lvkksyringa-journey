@@ -140,7 +140,7 @@ export default function GlassCard({ work, onClose, allWorks, onNavigate }: Glass
                     }
                     return null;
                   })()}
-                  {Object.entries(work.metadata).map(([key, value]) => (
+                  {Object.entries(work.metadata ?? {}).map(([key, value]) => (
                     <div key={key} className="flex text-base">
                       <span className="text-white/35 w-28 shrink-0 tracking-wider">{key}</span>
                       <span className="text-white/60">{value}</span>
