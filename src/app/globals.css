@@ -1,0 +1,98 @@
+@import "tailwindcss";
+
+:root {
+  --background: #000000;
+  --foreground: #ffffff;
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: 'Times New Roman', 'Noto Serif SC', 'Source Han Serif SC', Georgia, 'Songti SC', serif;
+}
+
+/* ── Liquid Glass System ── */
+
+/* 面板级：GlassCard 等大容器 */
+.glass {
+  --edge: rgba(255, 255, 255, 0.12);
+  background:
+    radial-gradient(ellipse at 50% 0%, rgba(255,255,255,0.06) 0%, transparent 60%),
+    rgba(255, 255, 255, 0.06);
+  border: 1px solid var(--edge);
+  border-top-color: rgba(255, 255, 255, 0.18);
+  backdrop-filter: blur(28px) saturate(150%) brightness(1.05);
+  -webkit-backdrop-filter: blur(28px) saturate(150%) brightness(1.05);
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.08),
+    0 8px 40px rgba(0,0,0,0.35),
+    0 2px 8px rgba(0,0,0,0.2);
+  border-radius: 24px;
+}
+
+/* 按钮级：Start Exploration */
+.glass-btn {
+  background:
+    radial-gradient(ellipse at 50% 0%, rgba(255,255,255,0.08) 0%, transparent 60%),
+    rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-top-color: rgba(255, 255, 255, 0.22);
+  backdrop-filter: blur(20px) saturate(140%);
+  -webkit-backdrop-filter: blur(20px) saturate(140%);
+  border-radius: 9999px;
+  color: rgba(255, 255, 255, 0.85);
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.06),
+    0 4px 20px rgba(0,0,0,0.3);
+  transition: all 0.5s cubic-bezier(0.22, 0.61, 0.36, 1);
+  cursor: pointer;
+}
+
+.glass-btn:hover {
+  background:
+    radial-gradient(ellipse at 50% 0%, rgba(255,255,255,0.14) 0%, transparent 60%),
+    rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.28);
+  border-top-color: rgba(255, 255, 255, 0.4);
+  color: #ffffff;
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.12),
+    0 8px 32px rgba(167,139,250,0.15),
+    0 2px 8px rgba(0,0,0,0.25);
+  transform: scale(1.04);
+}
+
+/* 标签筛选钮 */
+.glass-tag {
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-top-color: rgba(255, 255, 255, 0.14);
+  backdrop-filter: blur(12px) saturate(120%);
+  -webkit-backdrop-filter: blur(12px) saturate(120%);
+  border-radius: 9999px;
+  color: rgba(255, 255, 255, 0.5);
+  font-size: 0.8rem;
+  letter-spacing: 0.08em;
+  padding: 0.5rem 1.2rem;
+  transition: all 0.35s ease;
+  cursor: pointer;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.04);
+}
+
+.glass-tag:hover {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.18);
+  color: rgba(255, 255, 255, 0.75);
+}
+
+.glass-tag.active {
+  background: rgba(255, 255, 255, 0.14);
+  border-color: rgba(255, 255, 255, 0.28);
+  border-top-color: rgba(255, 255, 255, 0.35);
+  color: #ffffff;
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.1),
+    0 4px 16px rgba(167,139,250,0.12);
+}
+
+
