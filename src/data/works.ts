@@ -1646,20 +1646,52 @@ const gameWorks: Work[] = [
   {
     id: "game-1",
     title: "Vafi",
-    description: "Find the colors you lost.",
+    description: "Vafi is a first-person exploration puzzle game about perception, uncertainty, and finding color in a grayscale world.\n\nGuided only by a fading flashlight, you’ll navigate a shifting maze, uncover hidden perspective puzzles, and learn to see beyond what first appears visible. Every discovery brings you closer to restoring the color that was never truly gone.",
     tags: ["3D", "Adventure", "Mystery"],
     image: "/logos/vafi.png",
     itchUrl: "https://lvkksyringa.itch.io/vafi",
-    metadata: { Engine: "Godot" },
+    metadata: {
+      Engine: "Godot",
+      Role: "Solo developer - design, writing, code, art",
+      Innovation: "Mechanic as theme: a full-screen monochrome filter hides color except inside the flashlight beam. Each puzzle uses RGB colors chosen to collapse toward the gray wall under BT.601 grayscale conversion, making accessibility and visual perception the core puzzle language. Restoring color at the end becomes a wish for visually impaired players.",
+    },
+  },
+  {
+    id: "game-4",
+    title: "Infinity",
+    description: "Infinity is a first-person atmospheric puzzle experience inspired by the tesseract sequence in Interstellar.\n\nFall through a black hole into an impossible archive where a bedroom, a library, and fragments of memory repeat across time. Drift through zero gravity, follow their echoes, tune dust waves, resonate a bookshelf, and transmit one final message: STAY. An unofficial, non-commercial portfolio project inspired by Interstellar.",
+    tags: ["3D", "Adventure", "Mystery"],
+    image: "/logos/infinity.png",
+    itchUrl: "https://lvkksyringa.itch.io/infinity",
+    metadata: {
+      Engine: "Godot",
+      Role: "Solo developer - design, writing, code, art",
+    },
+  },
+  {
+    id: "game-5",
+    title: "Safe Harbor",
+    description: "Safe Harbor is a fan-made digital adaptation of the tabletop board game Up the River — a local hot-seat race down a shifting river, for 2 to 3 players (any seat human or AI).\n\nGuide three pieces past sandbanks and reefs toward the harbor, but the river never plays the same way twice. Each round rolls its own weather: Clear Skies lets a lucky roll be split between two of your pieces, Feeding Frenzy turns a shared tile into a dice-off duel, Easy Chartering hands you two rolls and lets you choose. Abilities you pick up along the way — Ignore Sandbank, Disrupt Reroll, Reroll Weather, Roll -1 — let you bend a bad round in your favor, or someone else's against you. Linger too close to the falls when the tide turns, and you're swept back.\n\nEvery roll, every choice, every clash is something you trigger yourself — nothing resolves automatically, whether you're playing against friends or AI opponents.\n\nFully playable in English and Chinese, with pixel art, a custom-built UI, and its own soundtrack.\n\nThis is an unofficial, non-commercial fan project, adapting the original tabletop ruleset for solo and local play. All credit for the original game design goes to its creators.",
+    tags: ["2D", "Board Game", "Strategy"],
+    image: "/logos/safeharbor.png",
+    itchUrl: "https://lvkksyringa.itch.io/safeharbor",
+    metadata: {
+      Engine: "Godot",
+      Role: "Solo developer - design, code, art (This game was modified as a team work in USC SCA Summer Program. I was a mechanic designer, then I digitalized the physical game independently.)",
+    },
   },
   {
     id: "game-2",
     title: "What's Under the Mask?",
-    description: "Go pairing the blocks!",
+    description: "What's Under the Mask is a short 2D memory puzzle game about seeing, hiding, and remembering.\n\nMove the mask to reveal the hidden colors beneath the blocks. The more you rely on the mask, the more pressure you create: in later stages, your mask time becomes limited, and in Endless Mode your HP constantly drains while you search for pairs.\n\nClear each matrix, chase a Perfect Memory run, or challenge yourself in Endless Mode as the drain speed keeps rising.",
     tags: ["2D", "Pixels", "Puzzle"],
     image: "/logos/whatsunderthemask.png",
     itchUrl: "https://lvkksyringa.itch.io/underthemask",
-    metadata: { Engine: "Godot" },
+    metadata: {
+      Engine: "Godot",
+      Role: "Solo developer - design, writing, code, art",
+      Innovation: "Created for Global Game Jam 2026 under the theme Mask. I reworked the classic color-pairing puzzle around a reveal mask and built a stable random generation algorithm: select two positions from a coordinate array, select one color from a color array, then spawn a matched pair. The result challenges both memory and reaction speed.",
+    },
   },
   {
     id: "game-3",
@@ -1667,7 +1699,10 @@ const gameWorks: Work[] = [
     description: "What did you lose? What do you still recall?",
     tags: ["2D", "Pixels", "Plot"],
     image: "/logos/afterlight.png",
-    metadata: { Engine: "Godot" },
+    metadata: {
+      Engine: "Godot",
+      Role: "Solo developer - design, writing, code",
+    },
   },
 ];
 

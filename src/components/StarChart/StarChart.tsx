@@ -17,6 +17,7 @@ interface StarData {
   work: Work | null;
   tags: string[];
   color?: { r: number; g: number; b: number }; // 自定义颜色（银河用）
+  depth?: "far" | "mid" | "near";
 }
 
 interface NebulaData {
@@ -34,6 +35,7 @@ interface CameraTarget {
 
 export interface StarChartProps {
   onSelectWork?: (work: Work, filteredIds?: string[]) => void;
+  isWorkOpen?: boolean;
 }
 
 /* ══════════════════════════════════════════════════════════
@@ -54,33 +56,52 @@ interface ConstellationShape {
   connections: [number, number][];
 }
 const SHAPES: Record<string, ConstellationShape> = {
-  // Photography → 六边形光圈
+  // Photography → 双层光圈：外圈像镜头，内圈像收拢的光圈叶片。
   photo: {
     skeleton: [
-      { x:  0.00, y:  0.00 }, // 0: 中心
-      { x: -1.00, y:  0.00 }, // 1: 左
-      { x: -0.50, y:  0.87 }, // 2: 左上
-      { x:  0.50, y:  0.87 }, // 3: 右上
-      { x:  1.00, y:  0.00 }, // 4: 右
-      { x:  0.50, y: -0.87 }, // 5: 右下
-      { x: -0.50, y: -0.87 }, // 6: 左下
+      { x:  0.00, y:  0.00 }, // 0: 光圈中心
+      { x:  0.00, y: -0.48 }, // 1-6: 内圈叶片顶点（逆时针）
+      { x:  0.42, y: -0.24 },
+      { x:  0.42, y:  0.24 },
+      { x:  0.00, y:  0.48 },
+      { x: -0.42, y:  0.24 },
+      { x: -0.42, y: -0.24 },
+      { x:  0.00, y: -1.00 }, // 7-12: 外圈镜头节点
+      { x:  0.87, y: -0.50 },
+      { x:  0.87, y:  0.50 },
+      { x:  0.00, y:  1.00 },
+      { x: -0.87, y:  0.50 },
+      { x: -0.87, y: -0.50 },
     ],
-    connections: [[1,2],[2,3],[3,4],[4,5],[5,6],[6,1],[0,1],[0,3],[0,5]],
+    connections: [
+      [1, 2], [2, 3], [3, 4], [4, 5], [5, 6], [6, 1],
+      [7, 8], [8, 9], [9, 10], [10, 11], [11, 12], [12, 7],
+      [0, 1], [0, 3], [0, 5],
+      [1, 7], [2, 8], [3, 9], [4, 10], [5, 11], [6, 12],
+    ],
   },
-  // Game Design → 菱形十字
+  // Game Design → 分支式交互图：核心、选择路径、回馈节点与终点。
   game: {
     skeleton: [
-      { x:  0.00, y:  0.00 }, // 0: 中心
-      { x:  0.00, y:  1.00 }, // 1: 上
-      { x: -1.00, y:  0.00 }, // 2: 左
-      { x:  0.00, y: -1.00 }, // 3: 下
-      { x:  1.00, y:  0.00 }, // 4: 右
-      { x: -0.35, y:  0.35 }, // 5: 内左上
-      { x:  0.35, y:  0.35 }, // 6: 内右上
-      { x:  0.35, y: -0.35 }, // 7: 内右下
-      { x: -0.35, y: -0.35 }, // 8: 内左下
+      { x:  0.00, y:  0.00 }, // 0: 系统核心
+      { x:  0.00, y: -0.56 }, // 1: 上行选择
+      { x: -0.72, y: -0.92 }, // 2: 上左终点
+      { x:  0.82, y: -0.78 }, // 3: 上右终点
+      { x: -0.62, y:  0.12 }, // 4: 左侧路径
+      { x: -1.05, y:  0.54 }, // 5: 左侧结果
+      { x:  0.66, y:  0.10 }, // 6: 右侧路径
+      { x:  1.08, y:  0.52 }, // 7: 右侧结果
+      { x:  0.00, y:  0.70 }, // 8: 回馈节点
+      { x: -0.52, y:  1.06 }, // 9: 下左延伸
+      { x:  0.58, y:  1.10 }, // 10: 下右延伸
     ],
-    connections: [[1,2],[1,4],[3,2],[3,4],[5,6],[6,7],[7,8],[8,5],[0,1],[0,3]],
+    connections: [
+      [0, 1], [1, 2], [1, 3],
+      [0, 4], [4, 5],
+      [0, 6], [6, 7],
+      [0, 8], [8, 9], [8, 10],
+      [4, 8], [6, 8],
+    ],
   },
 };
 
@@ -152,18 +173,34 @@ function genConstellationStars(
 
 function genBgStars(n: number, seed: number): StarData[] {
   const r = seededRand(seed);
-  return Array.from({ length: n }, (_, i) => ({
-    id: `bg-${i}`, work: null, tags: [],
-    x: r(0, MAP_W), y: r(0, MAP_H),
-    baseRadius: r(0.5, 1.8), brightness: r(0.25, 0.7),
-    phase: r(0, Math.PI * 2),
-  }));
+  const farCount = Math.round(n * 0.6);
+  const midCount = Math.round(n * 0.32);
+  return Array.from({ length: n }, (_, i) => {
+    const depth = i < farCount ? "far" : i < farCount + midCount ? "mid" : "near";
+    const palette = depth === "far"
+      ? [{ r: 128, g: 157, b: 210 }, { r: 149, g: 172, b: 225 }]
+      : depth === "near"
+        ? [{ r: 191, g: 185, b: 255 }, { r: 168, g: 204, b: 255 }, { r: 242, g: 189, b: 235 }]
+        : [{ r: 191, g: 207, b: 244 }, { r: 206, g: 218, b: 255 }];
+    const color = palette[Math.floor(r(0, palette.length))];
+    const radius = depth === "far" ? r(0.28, 0.85) : depth === "near" ? r(1.1, 2.15) : r(0.5, 1.45);
+    const brightness = depth === "far" ? r(0.16, 0.38) : depth === "near" ? r(0.48, 0.86) : r(0.28, 0.66);
+    return {
+      id: `bg-${i}`, work: null, tags: [], depth, color,
+      x: r(0, MAP_W), y: r(0, MAP_H),
+      baseRadius: radius, brightness,
+      phase: r(0, Math.PI * 2),
+    };
+  });
 }
 
 /* ══════════════════════════════════════════════════════════
    Camera Helpers
    ══════════════════════════════════════════════════════════ */
 function lerp(a: number, b: number, t: number) { return a + (b - a) * t; }
+function clamp(n: number, min: number, max: number) {
+  return Math.max(min, Math.min(max, n));
+}
 function easeInOutCubic(t: number) {
   return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
 }
@@ -171,7 +208,7 @@ function easeInOutCubic(t: number) {
 /* ══════════════════════════════════════════════════════════
    Component
    ══════════════════════════════════════════════════════════ */
-export default function StarChart({ onSelectWork }: StarChartProps) {
+export default function StarChart({ onSelectWork, isWorkOpen = false }: StarChartProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const animRef = useRef<number>(0);
@@ -179,10 +216,13 @@ export default function StarChart({ onSelectWork }: StarChartProps) {
   const [view, setView] = useState<"main" | "constellation">("main");
   const [activeId, setActiveId] = useState<string | null>(null);
   const [hoveredId, setHoveredId] = useState<string | null>(null);
+  const [hoveredRegionId, setHoveredRegionId] = useState<string | null>(null);
   const [selTag, setSelTag] = useState<string | null>(null);
 
   const hoveredRef = useRef<string | null>(null);
+  const hoveredRegionRef = useRef<string | null>(null);
   useEffect(() => { hoveredRef.current = hoveredId; }, [hoveredId]);
+  useEffect(() => { hoveredRegionRef.current = hoveredRegionId; }, [hoveredRegionId]);
 
   // 摄像机
   const camRef = useRef<Camera>({ cx: MAP_W / 2, cy: MAP_H / 2, zoom: 1 });
@@ -267,19 +307,23 @@ export default function StarChart({ onSelectWork }: StarChartProps) {
     if (view === "main") {
       // 适配：让完整地图适配屏幕
       const fitZoom = Math.min(size.w / MAP_W, size.h / MAP_H);
-      const target: CameraTarget = { cx: MAP_W / 2, cy: MAP_H / 2, zoom: fitZoom };
+      const target: CameraTarget = {
+        cx: MAP_W / 2,
+        cy: MAP_H / 2,
+        zoom: clamp(fitZoom * 1.04, 0.34, 0.58),
+      };
       animateCamera(target, 1400);
     } else if (view === "constellation" && activeId) {
       if (activeId === "center") {
         // 黑洞中心：中等缩放，看到两个星座
-        const zoom = Math.min(size.w, size.h) / 320;
+        const zoom = clamp(Math.min(size.w, size.h) / 340, 1.8, 3.4);
         animateCamera({ cx: 1800, cy: 1000, zoom }, 1600);
       } else {
         const reg = REGIONS[activeId];
         if (reg) {
           const SPREAD = 350;
-          const PADDING = 2.8;
-          const dynZoom = Math.min(size.w, size.h) / (SPREAD * PADDING);
+          const PADDING = size.w < 900 ? 3.3 : 2.9;
+          const dynZoom = clamp(Math.min(size.w, size.h) / (SPREAD * PADDING), 0.88, 1.95);
           animateCamera({ cx: reg.cx, cy: reg.cy, zoom: dynZoom }, 1600);
         }
       }
@@ -338,9 +382,8 @@ export default function StarChart({ onSelectWork }: StarChartProps) {
     };
 
     const drawBlackHole = (cx: number, cy: number, time: number) => {
-      const pulse = 1 + Math.sin(time * 0.7) * 0.08; // 脉动
+      const pulse = 1 + Math.sin(time * 0.7) * 0.08;
 
-      // 外层辉光
       for (let i = 4; i >= 0; i--) {
         const r = (70 + i * 30) * pulse;
         const g = ctx.createRadialGradient(cx, cy, r * 0.2, cx, cy, r);
@@ -352,8 +395,6 @@ export default function StarChart({ onSelectWork }: StarChartProps) {
       }
 
       const tilt = Math.PI / 6;
-
-      // 多层吸积环（内白外紫）
       const rings = [
         { rx: 42, ry: 12, w: 4.5, color: "rgba(240,230,255,0.5)" },
         { rx: 48, ry: 14, w: 3.5, color: "rgba(200,170,240,0.4)" },
@@ -372,7 +413,6 @@ export default function StarChart({ onSelectWork }: StarChartProps) {
         ctx.stroke();
       });
 
-      // 猛烈喷流（根部细，远端扩散）
       for (let side = -1; side <= 1; side += 2) {
         const jetLen = 160 + Math.sin(time * 1.3) * 30;
         const grad = ctx.createLinearGradient(0, -side * 32 * pulse, 0, -side * jetLen);
@@ -387,7 +427,6 @@ export default function StarChart({ onSelectWork }: StarChartProps) {
         ctx.lineTo(18, -side * jetLen);
         ctx.lineTo(-18, -side * jetLen);
         ctx.fill();
-        // 内核细束
         const coreGrad = ctx.createLinearGradient(0, -side * 30 * pulse, 0, -side * jetLen * 0.6);
         coreGrad.addColorStop(0, "rgba(220,200,255,0.4)");
         coreGrad.addColorStop(1, "transparent");
@@ -399,7 +438,6 @@ export default function StarChart({ onSelectWork }: StarChartProps) {
         ctx.lineTo(-0.5, -side * jetLen * 0.6);
         ctx.fill();
       }
-      // 喷流粒子（从根部向外喷射）
       for (let side = -1; side <= 1; side += 2) {
         for (let j = 0; j < 8; j++) {
           const tJet = (time * 0.6 + j * 0.4) % 1;
@@ -407,7 +445,7 @@ export default function StarChart({ onSelectWork }: StarChartProps) {
           const alpha = (1 - tJet) * 0.6;
           if (alpha > 0.02) {
             const spread = tJet * 8;
-            const px = (Math.sin(j * 3.7 + time * 2) * spread);
+            const px = Math.sin(j * 3.7 + time * 2) * spread;
             ctx.beginPath(); ctx.arc(px, py, 0.6 + tJet * 1.2, 0, Math.PI * 2);
             ctx.fillStyle = `rgba(220,200,255,${alpha})`;
             ctx.fill();
@@ -415,11 +453,10 @@ export default function StarChart({ onSelectWork }: StarChartProps) {
         }
       }
 
-      // 旋转粒子 + 渐变拖尾（50颗）
       for (let i = 0; i < 50; i++) {
         const orbit = 35 + (i % 5) * 8;
         const speed = 0.2 + (i % 5) * 0.08;
-        const N = 20; // 更长轨迹
+        const N = 20;
         const pts: { x: number; y: number }[] = [];
         for (let k = 0; k < N; k++) {
           const ht = time - k * 0.015;
@@ -427,9 +464,8 @@ export default function StarChart({ onSelectWork }: StarChartProps) {
           const hdr = orbit + Math.sin(ht * 1.8 + i) * 5;
           pts.push({ x: Math.cos(ha) * hdr, y: Math.sin(ha) * hdr * 0.3 });
         }
-        // 逐段画：越远越细越淡
         for (let k = 0; k < N - 1; k++) {
-          const t = k / (N - 1); // 0=头, 1=尾
+          const t = k / (N - 1);
           const alpha = 0.5 * (1 - t);
           const w = 1.8 * (1 - t * 0.85);
           if (alpha < 0.01) continue;
@@ -440,7 +476,6 @@ export default function StarChart({ onSelectWork }: StarChartProps) {
           ctx.lineWidth = w;
           ctx.stroke();
         }
-        // 粒子本体
         ctx.beginPath(); ctx.arc(pts[0].x, pts[0].y, 0.8, 0, Math.PI * 2);
         ctx.fillStyle = "rgba(240,225,255,0.8)";
         ctx.fill();
@@ -448,7 +483,6 @@ export default function StarChart({ onSelectWork }: StarChartProps) {
 
       ctx.restore();
 
-      // 光子环（爱因斯坦环）
       const phRing = 33 * pulse;
       const pg = ctx.createRadialGradient(cx, cy, phRing * 0.85, cx, cy, phRing * 1.15);
       pg.addColorStop(0, "rgba(180,160,240,0)");
@@ -458,7 +492,6 @@ export default function StarChart({ onSelectWork }: StarChartProps) {
       ctx.fillStyle = pg;
       ctx.beginPath(); ctx.arc(cx, cy, phRing * 1.15, 0, Math.PI * 2); ctx.fill();
 
-      // 事件视界（脉动，不旋转）
       const g = ctx.createRadialGradient(cx, cy, 0, cx, cy, 30 * pulse);
       g.addColorStop(0, "#000");
       g.addColorStop(0.7, "#040410");
@@ -511,6 +544,10 @@ export default function StarChart({ onSelectWork }: StarChartProps) {
         worldMap.allStars.filter(s => !s.work).forEach(s => {
           const tw = 0.55 + 0.45 * Math.sin(t * 2 + s.phase);
           let sx = s.x, sy = s.y;
+          if (s.depth === "near") {
+            sx += Math.sin(t * 0.18 + s.phase) * 12;
+            sy += Math.cos(t * 0.13 + s.phase * 1.7) * 8;
+          }
           // bh星绕黑洞公转
           if (s.id.startsWith("bh-")) {
             const dx = s.x - BH_X, dy = s.y - BH_Y;
@@ -525,7 +562,8 @@ export default function StarChart({ onSelectWork }: StarChartProps) {
 
         // 星座
         worldMap.constData.forEach(cd => {
-          const isHov = !!hovId && cd.stars.some(s => s.id === hovId);
+          const isRegionHov = hoveredRegionRef.current === cd.id;
+          const isHov = isRegionHov || (!!hovId && cd.stars.some(s => s.id === hovId));
           const la = isHov ? 0.5 : 0.22;
 
           // 骨架连线
@@ -547,6 +585,10 @@ export default function StarChart({ onSelectWork }: StarChartProps) {
         worldMap.allStars.filter(s => !s.work).forEach(s => {
           const tw = 0.55 + 0.45 * Math.sin(t * 2 + s.phase);
           let sx = s.x, sy = s.y;
+          if (s.depth === "near") {
+            sx += Math.sin(t * 0.18 + s.phase) * 12;
+            sy += Math.cos(t * 0.13 + s.phase * 1.7) * 8;
+          }
           if (s.id.startsWith("bh-")) {
             const dx = s.x - BH_X, dy = s.y - BH_Y;
             const dist = Math.hypot(dx, dy);
@@ -654,28 +696,37 @@ export default function StarChart({ onSelectWork }: StarChartProps) {
 
       // ── 屏幕空间：星座标签 + 黑洞标签 ──
       if (view === "main") {
+        const labelFontSize = clamp(Math.min(w, h) * 0.032, 20, 28);
+        const labelOffset = clamp(Math.min(w, h) * 0.18, 112, 170);
+
         // 黑洞标签
         const bhSx = size.w / 2 + (1800 - cam.cx) * cam.zoom;
         const bhSy = size.h / 2 + (1000 - cam.cy) * cam.zoom;
-        ctx.fillStyle = "rgba(195,210,235,0.85)";
-        ctx.font = "italic 28px 'Times New Roman', Georgia, serif";
+        const isCenterHov = hoveredRegionRef.current === "center";
+        ctx.fillStyle = isCenterHov ? "rgba(230,221,255,0.98)" : "rgba(195,210,235,0.85)";
+        ctx.font = `italic ${labelFontSize}px 'Times New Roman', Georgia, serif`;
         ctx.textAlign = "center";
-        ctx.fillText("About LvkkSyringa", bhSx, bhSy - 170);
+        ctx.fillText("About LvkkSyringa", bhSx, bhSy - labelOffset);
+        if (isCenterHov) {
+          ctx.fillStyle = "rgba(230,221,255,0.30)";
+          ctx.fillText("About LvkkSyringa", bhSx, bhSy - labelOffset);
+        }
 
         worldMap.constellations.forEach(c => {
           const reg = REGIONS[c.id];
           const sx = size.w / 2 + (reg.cx - cam.cx) * cam.zoom;
           const sy = size.h / 2 + (reg.cy - cam.cy) * cam.zoom;
           const cd = worldMap.constData.find(d => d.id === c.id);
-          const isHov = !!hoveredRef.current && !!cd && cd.stars.some(s => s.id === hoveredRef.current);
-          ctx.fillStyle = `rgba(195,210,235,0.85)`;
-          ctx.font = "italic 28px 'Times New Roman', Georgia, serif";
+          const isHov = hoveredRegionRef.current === c.id
+            || (!!hoveredRef.current && !!cd && cd.stars.some(s => s.id === hoveredRef.current));
+          ctx.fillStyle = isHov ? "rgba(226,231,255,0.98)" : "rgba(195,210,235,0.85)";
+          ctx.font = `italic ${labelFontSize}px 'Times New Roman', Georgia, serif`;
           ctx.textAlign = "center";
-          ctx.fillText(c.name, sx, sy - 160);
+          ctx.fillText(c.name, sx, sy - labelOffset * 0.94);
           // 微光晕
           if (isHov) {
             ctx.fillStyle = `rgba(210,220,245,0.95)`;
-            ctx.fillText(c.name, sx, sy - 160);
+            ctx.fillText(c.name, sx, sy - labelOffset * 0.94);
           }
         });
       }
@@ -709,7 +760,24 @@ export default function StarChart({ onSelectWork }: StarChartProps) {
       if (d < minDist) { minDist = d; closest = s.id; }
     }
     setHoveredId(closest);
-  }, [visibleStars, screenToMap, selTag]);
+
+    if (view !== "main") {
+      setHoveredRegionId(null);
+      return;
+    }
+
+    let region: string | null = Math.hypot(mapX - 1800, mapY - 1000) < 175 ? "center" : null;
+    if (!region) {
+      for (const c of worldMap.constellations) {
+        const reg = REGIONS[c.id];
+        if (Math.hypot(mapX - reg.cx, mapY - reg.cy) < 420) {
+          region = c.id;
+          break;
+        }
+      }
+    }
+    setHoveredRegionId(region);
+  }, [visibleStars, screenToMap, view, worldMap]);
 
   const onClick = useCallback((e: React.MouseEvent) => {
     const rect = canvasRef.current?.getBoundingClientRect();
@@ -725,6 +793,7 @@ export default function StarChart({ onSelectWork }: StarChartProps) {
         setView("constellation");
         setSelTag(null);
         setHoveredId(null);
+        setHoveredRegionId(null);
         return;
       }
       for (const c of worldMap.constellations) {
@@ -735,6 +804,7 @@ export default function StarChart({ onSelectWork }: StarChartProps) {
           setView("constellation");
           setSelTag(null);
           setHoveredId(null);
+          setHoveredRegionId(null);
           return;
         }
       }
@@ -762,6 +832,7 @@ export default function StarChart({ onSelectWork }: StarChartProps) {
     setActiveId(null);
     setSelTag(null);
     setHoveredId(null);
+    setHoveredRegionId(null);
   }, []);
 
   const tags = view === "constellation" && activeId && activeId !== "center" ? getTags(activeId) : [];
@@ -782,13 +853,26 @@ export default function StarChart({ onSelectWork }: StarChartProps) {
 
   return (
     <div ref={containerRef} className="relative w-full h-full">
-      <canvas ref={canvasRef} className="absolute inset-0 cursor-crosshair"
-        onMouseMove={onMove} onClick={onClick} />
+      <canvas ref={canvasRef} className="absolute inset-0"
+        style={{
+          cursor: hoveredRegionId || (view === "constellation" && visibleStars.some(s => s.id === hoveredId && !!s.work))
+            ? "pointer"
+            : "crosshair",
+        }}
+        onMouseMove={onMove} onMouseLeave={() => { setHoveredId(null); setHoveredRegionId(null); }} onClick={onClick} />
+
+      {view === "main" && (
+        <div className="pointer-events-none absolute inset-x-0 bottom-6 z-10 flex justify-center px-4 sm:bottom-8">
+          <div className="glass-hint text-center">
+            Click a constellation to explore works.
+          </div>
+        </div>
+      )}
 
       {view === "constellation" && (
         <>
           {activeId !== "center" && (
-          <div className="absolute top-6 left-0 right-0 z-10 flex justify-center gap-3 flex-wrap px-4">
+          <div className="absolute top-16 left-0 right-0 z-10 flex justify-center gap-2 sm:top-6 sm:gap-3 flex-wrap px-4 sm:px-36">
             <button
               className={`glass-tag ${!selTag ? "active" : ""}`}
               onClick={() => setSelTag(null)}
@@ -802,9 +886,9 @@ export default function StarChart({ onSelectWork }: StarChartProps) {
             ))}
           </div>
           )}
-          <button className="absolute top-6 left-6 z-10 glass-tag" onClick={onBack}>← BACK</button>
+          <button className="absolute top-6 left-6 z-30 glass-tag" onClick={onBack}>← BACK</button>
           {activeId !== "center" && (
-          <div className="absolute top-6 right-6 z-10 hidden sm:block text-right font-serif">
+          <div className="star-side-note absolute top-6 right-6 z-10 hidden sm:block text-right font-serif">
             {activeId !== "game" && tagCounts && (
             <div className="text-white/35 text-xs leading-relaxed mb-2 tracking-wide">
               <div className="text-white/50">Total: {worldMap.constellations.find(c=>c.id===activeId)?.works.length ?? 0} photos</div>
@@ -818,6 +902,13 @@ export default function StarChart({ onSelectWork }: StarChartProps) {
               点击图片查看大图<br />
               <span className="not-italic text-xs">Click the image to see the full version.</span>
             </p>
+          </div>
+          )}
+          {activeId !== "center" && !isWorkOpen && (
+          <div className="pointer-events-none absolute inset-x-0 bottom-6 z-10 flex justify-center px-4 sm:bottom-8">
+            <div className="glass-hint text-center">
+              Click a glowing star to view a work.
+            </div>
           </div>
           )}
         </>

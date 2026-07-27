@@ -121,7 +121,7 @@ export default function Home() {
             animate={{ opacity: 1 }}
             transition={{ duration: 1.5, ease: "easeOut" }}
           >
-            <StarChart onSelectWork={handleSelectWork} />
+            <StarChart onSelectWork={handleSelectWork} isWorkOpen={selectedWork !== null} />
           </motion.div>
         )}
 

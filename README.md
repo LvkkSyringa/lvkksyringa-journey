@@ -1,36 +1,49 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Fengqiao World
 
-## Getting Started
+Personal portfolio site for LvkkSyringa, built with Next.js. The experience is structured as an interactive star chart that connects photography, game design works, and an about section.
 
-First, run the development server:
+## Local Development
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+From `cmd.exe`:
+
+```bat
+cd /d D:\Creation\OtherFiles\Elysiae\fengqiao-world
+dev.bat
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+From PowerShell:
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```powershell
+Set-Location "D:\Creation\OtherFiles\Elysiae\fengqiao-world"
+.\dev.bat
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Open `http://localhost:3000` after the terminal shows `Ready`.
 
-## Learn More
+## Build
 
-To learn more about Next.js, take a look at the following resources:
+```bat
+npm.cmd run build
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Project Map
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+- `src/app/page.tsx` - main experience flow and selected work state.
+- `src/components/StarChart/StarChart.tsx` - canvas star map, constellations, black hole, click/hover logic.
+- `src/components/GlassCard/GlassCard.tsx` - work detail modal.
+- `src/components/AboutPanel.tsx` - about view cards.
+- `src/data/works.ts` - photography and game portfolio data.
+- `public/images/` - photography images.
+- `public/logos/` - game and profile visual assets.
 
-## Deploy on Vercel
+## Portfolio Content
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+- Photography: 102 EXIF-backed works in `public/images/`.
+- Game Design: Vafi, Infinity, Safe Harbor, What's Under the Mask?, and After Light.
+- `src/data/works.ts` is the canonical portfolio-data source; use paragraph breaks (`\n\n`) for longer work descriptions.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Handoff Notes
+
+For the current implementation state, recent changes, and recommended next optimization directions, read:
+
+- `docs/next-handoff.md`

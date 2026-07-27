@@ -6,3 +6,5 @@ out/
 .env*.local
 *.heic
 *.HEIC
+dev-server.log
+black-hole-*-check.png
