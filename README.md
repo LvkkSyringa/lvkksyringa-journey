@@ -7,14 +7,12 @@ Personal portfolio site for LvkkSyringa, built with Next.js. The experience is s
 From `cmd.exe`:
 
 ```bat
-cd /d D:\Creation\OtherFiles\Elysiae\fengqiao-world
 dev.bat
 ```
 
 From PowerShell:
 
 ```powershell
-Set-Location "D:\Creation\OtherFiles\Elysiae\fengqiao-world"
 .\dev.bat
 ```
 
@@ -44,6 +42,12 @@ npm.cmd run build
 
 ## Handoff Notes
 
-For the current implementation state, recent changes, and recommended next optimization directions, read:
+For the current implementation state and constraints, read:
 
+- `HANDOFF.md`
 - `docs/next-handoff.md`
+
+Recovery and decision references:
+
+- `docs/ENVIRONMENT.md`
+- `docs/DECISIONS.md`

@@ -1,8 +1,8 @@
 # Fengqiao World Handoff
 
-Last updated: 2026-07-18
+For active status, the exact next action, blockers, and owner questions, read the repository-root `HANDOFF.md`. This file is the detailed implementation and photo-ingest reference.
 
-This document is a handoff note for the next coding session. It records the current portfolio site structure, the local changes made in the recent work session, and the recommended next visual and workflow upgrades.
+This document records the portfolio site's current structure, verified implementation constraints, and the remaining photo-ingest proposal.
 
 ## Project Snapshot
 
@@ -18,44 +18,18 @@ This document is a handoff note for the next coding session. It records the curr
 - Local dev command from `cmd.exe`:
 
 ```bat
-cd /d D:\Creation\OtherFiles\Elysiae\fengqiao-world
 dev.bat
 ```
 
 From PowerShell:
 
 ```powershell
-Set-Location "D:\Creation\OtherFiles\Elysiae\fengqiao-world"
 .\dev.bat
 ```
 
 `dev.bat` runs `npm run dev`, which starts `next dev` at `http://localhost:3000`.
 
-## Current Working Tree Notes
-
-Known intended local changes at the time of this handoff:
-
-- `public/logos/whatsunderthemask.png` is a user-side asset update. Do not revert it.
-- `public/logos/infinity.png` is an intended Infinity game-logo asset and is referenced by `src/data/works.ts`. Do not delete it.
-- Several UI and data files are modified from the last committed state:
-  - `src/app/globals.css`
-  - `src/app/page.tsx`
-  - `src/components/AboutPanel.tsx`
-  - `src/components/GlassCard/GlassCard.tsx`
-  - `src/components/StarChart/StarChart.tsx`
-  - `src/data/works.ts`
-- `docs/next-handoff.md` is the current handoff document and is untracked until the user chooses to commit it.
-
-Validation performed during the session:
-
-- `npm.cmd run build` passed after the UI and content changes.
-- `npm.cmd run lint` is not currently clean because of pre-existing `Aurora.tsx` / `Strands.tsx` ref-during-render errors and one `prefer-const` issue. Those files were not changed in this session.
-- Next.js still warns about multiple `package-lock.json` files:
-  - `D:\Creation\OtherFiles\Elysiae\package-lock.json`
-  - `D:\Creation\OtherFiles\Elysiae\fengqiao-world\package-lock.json`
-  This warning does not currently block local preview or production build.
-
-## Recent UI Changes
+## Current Implementation
 
 ### StarChart
 
@@ -105,8 +79,6 @@ Files:
 - `src/components/AboutPanel.tsx`
 - `src/app/globals.css`
 
-Changes:
-
 - Added class hooks:
   - `about-panel`
   - `about-panel-inner`
@@ -118,7 +90,7 @@ Changes:
 
 File: `src/app/globals.css`
 
-Added reusable classes:
+Reusable classes:
 
 - `.glass-hint`
 - `.hide-scrollbar`
@@ -126,89 +98,12 @@ Added reusable classes:
 - `.work-card-frame`
 - `.work-card-scroll`
 
-Added responsive rules for:
+Responsive rules cover:
 
 - Hiding right-side star notes on smaller or shorter viewports.
 - About-panel vertical layout.
 - Compact glass tags.
 - Compact work-card media height.
-
-## Recent Game Content Changes
-
-File: `src/data/works.ts`
-
-### Vafi
-
-Current description:
-
-- `Vafi is a first-person exploration puzzle game about perception, uncertainty, and finding color in a grayscale world.`
-- The second paragraph explains its fading flashlight, shifting maze, perspective puzzles, and restoration of color.
-
-Current metadata:
-
-- `Engine`: `Godot`
-- `Role`: `Solo developer - design, writing, code, art`
-- `Innovation`: Explains "mechanic as theme":
-  - Full-screen monochrome filter.
-  - Only the flashlight-lit center area shows original color.
-  - Three puzzles use RGB colors that become close to gray walls under BT.601 grayscale conversion.
-  - Solving the final puzzle restores color to the world, expressing a wish for visually impaired players.
-
-### What's Under the Mask?
-
-Current description is a three-paragraph English description:
-
-- It is a short 2D memory puzzle game about seeing, hiding, and remembering.
-- The player moves a mask to reveal hidden colors beneath blocks.
-- Later stages limit mask time.
-- Endless Mode drains HP while the player searches for pairs.
-- The player can clear matrices, chase Perfect Memory, or challenge rising drain speed in Endless Mode.
-
-Current metadata:
-
-- `Engine`: `Godot`
-- `Role`: `Solo developer - design, writing, code, art`
-- `Innovation`: Explains:
-  - It was created for Global Game Jam 2026 under the theme `Mask`.
-  - It reworks classic color-pairing around a reveal mask.
-  - It uses a stable random generation algorithm:
-    - Select two positions from a coordinate array.
-    - Select one color from a color array.
-    - Spawn a matched pair at the selected positions.
-  - The game challenges memory and reaction speed.
-
-### After Light
-
-Current metadata:
-
-- `Engine`: `Godot`
-- `Role`: `Solo developer - design, writing, code`
-
-Important authorship note:
-
-- Do not list `art` for After Light. Its art was made by a friend.
-
-### Infinity
-
-Current metadata:
-
-- `Engine`: `Godot`
-- `Role`: `Solo developer - design, writing, code, art`
-- `Tags`: `3D`, `Adventure`, `Mystery`
-- Itch URL: `https://lvkksyringa.itch.io/infinity`
-- Logo: `public/logos/infinity.png`
-- Description: a first-person atmospheric puzzle experience in an impossible archive of recurring spaces and memory, explicitly marked as an unofficial, non-commercial project inspired by *Interstellar*.
-
-### Safe Harbor
-
-Current metadata:
-
-- `Engine`: `Godot`
-- `Role`: `Solo developer - design, code, art (This game was modified as a team work in USC SCA Summer Program. I was a mechanic designer, then I digitalized the physical game independently.)`
-- `Tags`: `2D`, `Board Game`, `Strategy`
-- Itch URL: `https://lvkksyringa.itch.io/safeharbor`
-- Logo: `public/logos/safeharbor.png`
-- Description: a fan-made, non-commercial digital adaptation of *Up the River* for 2–3 local human or AI players, with weather events, player-triggered abilities, bilingual support, pixel art, a custom UI, and an original soundtrack.
 
 ## Photo Ingest Pipeline Requirements
 
@@ -300,34 +195,6 @@ Recommended metadata field mapping:
 - `ISO`
 - `Focal`
 
-## Current Visual Status and Next Direction
-
-The current visual identity is quiet, mysterious, poetic, and portfolio-appropriate. The major symbolic upgrade is complete: Photography reads as an aperture, Game Design reads as an interaction graph, and the background has layered depth.
-
-### Completed Visual Work
-
-- Semantic constellation shapes, layered starfield, responsive camera framing, and non-elliptical hover feedback are implemented in `StarChart.tsx`.
-- The original purple geometric black hole remains the approved About-center treatment.
-
-### Next Direction: Reviewer Path or Highlights
-
-Priority: lower than maintaining the current visual cohesion.
-
-Recommendation:
-
-- Do not add a random three-photo button as a formal application feature.
-- If added, make it a curated `Highlights` or `Reviewer Path` feature.
-- It should guide reviewers through 3 to 5 deliberately selected works:
-  - one strong photography work
-  - one strong game systems/design work
-  - one personal/about signal
-  - optional visual storytelling or technical implementation signal
-
-Reason:
-
-- Random recommendations feel more like a personal gallery toy.
-- Curated highlights better serve admissions review.
-
 ## Design Guardrails
 
 - Preserve the existing poetic, quiet, glass-and-starlight tone.
@@ -343,21 +210,3 @@ Reason:
   - narrow browser window
   - short-height viewport
   - browser zoom around 125 percent
-
-## Suggested Next Session Plan
-
-1. Read this file first.
-2. Run:
-
-```bat
-cd /d D:\Creation\OtherFiles\Elysiae\fengqiao-world
-dev.bat
-```
-
-3. Inspect current visuals at `http://localhost:3000`.
-4. Inspect the completed main view, constellation view, About view, and work-card overlay before proposing another visual pass.
-5. Treat the purple geometric black hole as locked unless the user supplies and approves a new visual direction.
-6. Decide whether to implement a curated reviewer path or the photo-ingest pipeline.
-7. If doing ingest work:
-   - add dependencies deliberately.
-   - avoid modifying existing 102 photo entries until the new script is tested on a sample copy.
