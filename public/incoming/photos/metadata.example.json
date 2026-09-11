@@ -1,0 +1,22 @@
+{
+  "IMG_0001.HEIC": {
+    "title": "English Title 中文标题",
+    "location": "Shanghai, China",
+    "tags": ["Landscape"],
+    "lens": "Main 24mm",
+    "focal": "24mm"
+  },
+  "DSC00001.JPG": {
+    "title": "Another Work 另一件作品",
+    "location": "Los Angeles, United States",
+    "tags": ["Street", "Landscape"],
+    "exifSource": "D:\\path\\to\\matching-original.ARW"
+  },
+  "composite.jpg": {
+    "title": "Composite Work 合成作品",
+    "location": "Shanghai, China",
+    "tags": ["Landscape"],
+    "date": "2026-09-06",
+    "skipExif": true
+  }
+}

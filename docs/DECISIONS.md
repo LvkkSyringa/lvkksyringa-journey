@@ -35,7 +35,7 @@ Why: this is an admissions-facing portfolio. Incorrect ownership or invented imp
 
 ## Photo Ingest Contract
 
-The pipeline is designed but not implemented. When implemented:
+The pipeline is implemented in `scripts/ingest-photo.mjs` with these locked behaviors:
 
 - Read EXIF from the original before conversion or compression.
 - Convert web output to JPG, resize inside 1920x1280 without enlargement, and use quality 75 MozJPEG as currently specified in `docs/next-handoff.md`.
@@ -43,6 +43,16 @@ The pipeline is designed but not implemented. When implemented:
 - For iPhone images, prefer 35 mm equivalent focal length; do not force the lens label and displayed focal length to match.
 - Ask for ambiguous creative metadata and show a preview before editing `src/data/works.ts`.
 - Test only on copies until duplicate-ID, collision, and failure behavior are verified.
+- Keep incoming originals and `public/incoming/photos/metadata.json` ignored by Git.
+- Use `src/data/photo-ingest-history.json` to identify an already-applied original by SHA-256 without deleting or moving the incoming copy.
+- Treat `--apply` as the explicit write boundary. A default run must not write images, portfolio entries, or history.
+- Allow a per-file `exifSource` so an edited PNG/JPG can use metadata from its original RAW without changing which image is converted for the website.
+- Allow `skipExif: true` for intentional no-EXIF work. Such an entry requires an owner-provided date for its ID and may include a deliberate subset of manual metadata such as Camera and Lens.
+- Keep `src/data/exif.json` as legacy/intermediate data for the original import; new creative fields belong in the ignored local `metadata.json`, and applied entries go directly to canonical `works.ts`.
+- Preserve an explicit empty `title` as an intentional untitled work. A missing `title` key remains an unresolved field and blocks apply.
+- Format bilingual titles as English, one space, then Chinese. Preserve explicit empty titles.
+- Normalize Sony camera models to include the manufacturer prefix, for example `Sony ILCE-7M4`, while retaining the established `iPhone 17 Pro` convention for phone entries.
+- Present photography works in ascending capture-date order. Since photo IDs use `photo-YYYYMMDDN`, sorting by ID also preserves the sequence of multiple works from the same date and prevents incoming filename order from affecting the website.
 
 Why: metadata can be lost or reinterpreted during conversion, and the portfolio contains deliberate iPhone lens/focal combinations.
 

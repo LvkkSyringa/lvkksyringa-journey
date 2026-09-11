@@ -1,0 +1,86 @@
+[
+  {
+    "sourceFilename": "DSC00047.png",
+    "originalSha256": "980773eb0eabd21fb7d311ceeb5df95b36271d193ef75e08ecd1ff28606a53b4",
+    "workId": "photo-202609051",
+    "image": "/images/202609051.jpg"
+  },
+  {
+    "sourceFilename": "DSC00064.png",
+    "originalSha256": "4f946a77c6d68244115b8e7b0c3a1ef09a23ba5a84ab9a4eab82141598066b10",
+    "workId": "photo-202609052",
+    "image": "/images/202609052.jpg"
+  },
+  {
+    "sourceFilename": "DSC00068.png",
+    "originalSha256": "a45e7fcb73e0b9c6313e7ccec09bab4c860c0f4c4881976852db7ae357b4b5d0",
+    "workId": "photo-202609053",
+    "image": "/images/202609053.jpg"
+  },
+  {
+    "sourceFilename": "galaxy.jpg",
+    "originalSha256": "ff1d83082517fe17c9b1df6d10c555b89cb06e40023a5689c88af2f9d79d8320",
+    "workId": "photo-202609061",
+    "image": "/images/202609061.jpg"
+  },
+  {
+    "sourceFilename": "IMG_9035.HEIC",
+    "originalSha256": "836d34b336a29fd18a75d239028e5c2cc83f6014d9498eee775bc752e1916cf2",
+    "workId": "photo-202606201",
+    "image": "/images/202606201.jpg"
+  },
+  {
+    "sourceFilename": "IMG_9057.HEIC",
+    "originalSha256": "b999ee6d49a2ca309438481934f93e66c1b37db6e60dc99cfdc6104280efb9d4",
+    "workId": "photo-202606211",
+    "image": "/images/202606211.jpg"
+  },
+  {
+    "sourceFilename": "IMG_9110.HEIC",
+    "originalSha256": "8dfc0143f7c45bc6ab896329d6378c731fe19dfd300e5c364595a21ffbb19743",
+    "workId": "photo-202606251",
+    "image": "/images/202606251.jpg"
+  },
+  {
+    "sourceFilename": "IMG_9206.HEIC",
+    "originalSha256": "ea2820d98674b70732edd9111a554985788c0660d271cf89f03cd4badfa258c3",
+    "workId": "photo-202607021",
+    "image": "/images/202607021.jpg"
+  },
+  {
+    "sourceFilename": "IMG_9420.HEIC",
+    "originalSha256": "61842f5c4c6ded058ed324c59d3b253c8e73c135c437664b39651b7da3d79826",
+    "workId": "photo-202607241",
+    "image": "/images/202607241.jpg"
+  },
+  {
+    "sourceFilename": "IMG_9567.HEIC",
+    "originalSha256": "c943de73c4ee284900abb89aa8a3b86d9b3a3b1ddf18ea227196e05ca2148eb6",
+    "workId": "photo-202608091",
+    "image": "/images/202608091.jpg"
+  },
+  {
+    "sourceFilename": "IMG_9601.HEIC",
+    "originalSha256": "14c343e531e694dfb4d59c17a5dc5283a4534543de25112b9267fddf9e0c93ac",
+    "workId": "photo-202608092",
+    "image": "/images/202608092.jpg"
+  },
+  {
+    "sourceFilename": "IMG_9780.HEIC",
+    "originalSha256": "3cd721c9993311fd39279304982d7be6356b6e14ae3bc9590fa3f6389b2338eb",
+    "workId": "photo-202608211",
+    "image": "/images/202608211.jpg"
+  },
+  {
+    "sourceFilename": "IMG_9844.HEIC",
+    "originalSha256": "9356bd9e441bd158db699c9ccf283e3bfd6d756c45a133315e35f808c09beaea",
+    "workId": "photo-202608231",
+    "image": "/images/202608231.jpg"
+  },
+  {
+    "sourceFilename": "IMG_9886.HEIC",
+    "originalSha256": "9feaca7b0ff0cfd6fdc748d8cc0e76e112f3c8e8549a91570dbb99ad5315a89d",
+    "workId": "photo-202608232",
+    "image": "/images/202608232.jpg"
+  }
+]

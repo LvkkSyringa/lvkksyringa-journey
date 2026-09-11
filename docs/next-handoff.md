@@ -2,7 +2,7 @@
 
 For active status, the exact next action, blockers, and owner questions, read the repository-root `HANDOFF.md`. This file is the detailed implementation and photo-ingest reference.
 
-This document records the portfolio site's current structure, verified implementation constraints, and the remaining photo-ingest proposal.
+This document records the portfolio site's current structure, verified implementation constraints, and the implemented photo-ingest workflow.
 
 ## Project Snapshot
 
@@ -105,11 +105,11 @@ Responsive rules cover:
 - Compact glass tags.
 - Compact work-card media height.
 
-## Photo Ingest Pipeline Requirements
+## Photo Ingest Pipeline
 
-This pipeline is not implemented yet. It is a recommended next workflow because the user will frequently add small batches of new photography works.
+Implemented in `scripts/ingest-photo.mjs`. The user can now add small batches without manually resizing images or editing the photo array by hand.
 
-Desired user workflow:
+User workflow:
 
 ```bat
 npm.cmd run ingest:photo
@@ -123,7 +123,16 @@ Recommended output folder:
 
 - `public/images/`
 
-Required behavior:
+Local metadata file:
+
+- Copy `public/incoming/photos/metadata.example.json` to `public/incoming/photos/metadata.json`.
+- The local `metadata.json` and all incoming originals are ignored by Git.
+- Entries are keyed by the exact source filename; filename lookup is case-insensitive.
+- `title`, `location`, and `tags` belong here, not in the legacy `src/data/exif.json`.
+- `exifSource` may point to a matching RAW while the displayed PNG/JPG remains the conversion input.
+- `skipExif: true` bypasses EXIF parsing; provide `date` explicitly so the script can generate `photo-YYYYMMDDN`. Optional manual fields such as `camera` and `lens` are still included.
+
+Implemented behavior:
 
 1. Scan incoming image files.
 2. Support `.heic`, `.jpg`, `.jpeg`, and `.png` inputs.
@@ -155,6 +164,12 @@ sharp(input)
    - lens name when EXIF is missing or unreliable
    - focal length when 35mm equivalent cannot be inferred
 9. Show a preview and request confirmation before editing `src/data/works.ts`.
+10. Reject `--apply` while any required field is unresolved.
+11. Refuse existing work IDs and output image paths rather than overwriting them.
+12. Record the original SHA-256 in `src/data/photo-ingest-history.json` so repeated batches are skipped safely.
+13. Leave all incoming originals untouched after apply.
+14. Keep EXIF input and display-image input separate when `exifSource` is configured.
+15. For `skipExif: true`, require only date and creative fields; include only manually supplied Camera/Lens/exposure metadata.
 
 ### EXIF Mapping Rules
 

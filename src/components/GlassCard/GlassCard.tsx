@@ -117,7 +117,7 @@ export default function GlassCard({ work, onClose, allWorks, onNavigate }: Glass
                   </p>
                 )}
 
-                {(work.metadata && Object.keys(work.metadata).length > 0 || work.itchUrl || work.id.startsWith("game-")) && (
+                {(work.id.startsWith("photo-") || (work.metadata && Object.keys(work.metadata).length > 0) || work.itchUrl || work.id.startsWith("game-")) && (
                   <div className="border-t border-white/8 pt-4 space-y-1.5">
                     {work.itchUrl ? (
                       <div className="flex text-base">

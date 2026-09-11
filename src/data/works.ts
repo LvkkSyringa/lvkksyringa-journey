@@ -1,6 +1,6 @@
 /* ══════════════════════════════════════════════════════════
    数据模型 & 作品
-   自动生成自 src/data/exif.json
+   摄影条目由 scripts/ingest-photo.mjs 追加；此文件为当前数据源
    ══════════════════════════════════════════════════════════ */
 
 export interface Work {
@@ -1637,9 +1637,249 @@ const photoWorks: Work[] =
       "ISO": "400",
       "Focal": "100mm"
     }
+  },
+  {
+    "id": "photo-202609051",
+    "title": "",
+    "description": "Shanghai, China",
+    "tags": [
+      "Landscape"
+    ],
+    "image": "/images/202609051.jpg",
+    "metadata": {
+      "Camera": "Sony ILCE-7M4",
+      "Lens": "FE 70-200mm F2.8 GM OSS II",
+      "Aperture": "f/8",
+      "Shutter": "1/400",
+      "ISO": "100",
+      "Focal": "200mm"
+    }
+  },
+  {
+    "id": "photo-202609052",
+    "title": "Burning Sky 炽烈之天",
+    "description": "Shanghai, China",
+    "tags": [
+      "Landscape"
+    ],
+    "image": "/images/202609052.jpg",
+    "metadata": {
+      "Camera": "Sony ILCE-7M4",
+      "Lens": "FE 20-70mm F4 G",
+      "Aperture": "f/4",
+      "Shutter": "1/100",
+      "ISO": "100",
+      "Focal": "31mm"
+    }
+  },
+  {
+    "id": "photo-202609053",
+    "title": "Far Light 远光",
+    "description": "Shanghai, China",
+    "tags": [
+      "Landscape"
+    ],
+    "image": "/images/202609053.jpg",
+    "metadata": {
+      "Camera": "Sony ILCE-7M4",
+      "Lens": "FE 20-70mm F4 G",
+      "Aperture": "f/4",
+      "Shutter": "1/50",
+      "ISO": "160",
+      "Focal": "70mm"
+    }
+  },
+  {
+    "id": "photo-202609061",
+    "title": "Deep Sky Objects 深空天体",
+    "description": "Shanghai, China",
+    "tags": [
+      "Astro"
+    ],
+    "image": "/images/202609061.jpg",
+    "metadata": {
+      "Camera": "Sony ILCE-7M4",
+      "Lens": "FE 20-70mm F4 G"
+    }
+  },
+  {
+    "id": "photo-202606201",
+    "title": "",
+    "description": "Jiangsu, China",
+    "tags": [
+      "Street"
+    ],
+    "image": "/images/202606201.jpg",
+    "metadata": {
+      "Camera": "iPhone 17 Pro",
+      "Lens": "Main 48mm",
+      "Aperture": "f/1.8",
+      "Shutter": "1/272",
+      "ISO": "64",
+      "Focal": "48mm"
+    }
+  },
+  {
+    "id": "photo-202606211",
+    "title": "",
+    "description": "Jiangsu, China",
+    "tags": [
+      "Street",
+      "Architecture"
+    ],
+    "image": "/images/202606211.jpg",
+    "metadata": {
+      "Camera": "iPhone 17 Pro",
+      "Lens": "Tele 100mm",
+      "Aperture": "f/2.8",
+      "Shutter": "1/121",
+      "ISO": "100",
+      "Focal": "100mm"
+    }
+  },
+  {
+    "id": "photo-202606251",
+    "title": "",
+    "description": "Incheon, Korea",
+    "tags": [
+      "Landscape"
+    ],
+    "image": "/images/202606251.jpg",
+    "metadata": {
+      "Camera": "iPhone 17 Pro",
+      "Lens": "Tele 100mm",
+      "Aperture": "f/2.8",
+      "Shutter": "1/691",
+      "ISO": "20",
+      "Focal": "100mm"
+    }
+  },
+  {
+    "id": "photo-202607021",
+    "title": "",
+    "description": "LA, US",
+    "tags": [
+      "Street",
+      "Architecture"
+    ],
+    "image": "/images/202607021.jpg",
+    "metadata": {
+      "Camera": "iPhone 17 Pro",
+      "Lens": "Tele 100mm",
+      "Aperture": "f/2.8",
+      "Shutter": "1/121",
+      "ISO": "50",
+      "Focal": "100mm"
+    }
+  },
+  {
+    "id": "photo-202607241",
+    "title": "The Empyrean 长空",
+    "description": "LA, US",
+    "tags": [
+      "Street",
+      "Landscape"
+    ],
+    "image": "/images/202607241.jpg",
+    "metadata": {
+      "Camera": "iPhone 17 Pro",
+      "Lens": "Tele 100mm",
+      "Aperture": "f/2.8",
+      "Shutter": "1/125",
+      "ISO": "40",
+      "Focal": "100mm"
+    }
+  },
+  {
+    "id": "photo-202608091",
+    "title": "",
+    "description": "Hong Kong, China",
+    "tags": [
+      "Street",
+      "Landscape"
+    ],
+    "image": "/images/202608091.jpg",
+    "metadata": {
+      "Camera": "iPhone 17 Pro",
+      "Lens": "Main 24mm",
+      "Aperture": "f/1.8",
+      "Shutter": "1/1541",
+      "ISO": "64",
+      "Focal": "24mm"
+    }
+  },
+  {
+    "id": "photo-202608092",
+    "title": "Nostalgia 我所怀念的",
+    "description": "Hong Kong, China",
+    "tags": [
+      "Street"
+    ],
+    "image": "/images/202608092.jpg",
+    "metadata": {
+      "Camera": "iPhone 17 Pro",
+      "Lens": "Tele 100mm",
+      "Aperture": "f/2.8",
+      "Shutter": "1/500",
+      "ISO": "50",
+      "Focal": "100mm"
+    }
+  },
+  {
+    "id": "photo-202608211",
+    "title": "",
+    "description": "Macao, China",
+    "tags": [
+      "Landscape"
+    ],
+    "image": "/images/202608211.jpg",
+    "metadata": {
+      "Camera": "iPhone 17 Pro",
+      "Lens": "Tele 100mm",
+      "Aperture": "f/2.8",
+      "Shutter": "1/92",
+      "ISO": "32",
+      "Focal": "200mm"
+    }
+  },
+  {
+    "id": "photo-202608231",
+    "title": "",
+    "description": "Macao, China",
+    "tags": [
+      "Street",
+      "Architecture"
+    ],
+    "image": "/images/202608231.jpg",
+    "metadata": {
+      "Camera": "iPhone 17 Pro",
+      "Lens": "Tele 100mm",
+      "Aperture": "f/2.8",
+      "Shutter": "1/490",
+      "ISO": "50",
+      "Focal": "100mm"
+    }
+  },
+  {
+    "id": "photo-202608232",
+    "title": "Enthroned 众星捧月",
+    "description": "Macao, China",
+    "tags": [
+      "Portrait"
+    ],
+    "image": "/images/202608232.jpg",
+    "metadata": {
+      "Camera": "iPhone 17 Pro",
+      "Lens": "Tele 100mm",
+      "Aperture": "f/2.8",
+      "Shutter": "1/121",
+      "ISO": "200",
+      "Focal": "100mm"
+    }
   }
-]
-;
+];
+
+photoWorks.sort((a, b) => a.id.localeCompare(b.id));
 
 /* ── 游戏作品 ── */
 const gameWorks: Work[] = [
