@@ -23,6 +23,19 @@ Rejected approach:
 
 - A warm, flowing, cinematic Interstellar-like black-hole/accretion-disk rewrite was tried and rejected. Do not repeat it without a new reference and explicit approval. The current purple geometric treatment is the locked baseline.
 
+## Work Viewer and Motion
+
+- The accepted work viewer is desktop-focused: one centered active card with the immediately previous and next works staged as lower-opacity 3D glass cards.
+- Navigation may use side-card clicks, fixed arrow buttons, or keyboard arrows. Preserve Escape behavior for closing full-screen imagery and then the viewer.
+- Keep a frosted, darkened backdrop for text clarity, but do not pause the Canvas starfield or black-hole animation while the viewer is open. A live background keeps viewport resizing visually coherent.
+- Keep Canvas resolution bounded by a device-pixel-ratio cap of 2 and resize its backing store only when the render effect is established or viewport state changes, not on every frame.
+- Preload progressively: current work first at display quality, immediate neighbors next, then smaller second-neighbor previews during idle time. Respect Save-Data and 2G-class connection hints by skipping the second-neighbor warmup.
+- Use the Next.js image pipeline for the viewer instead of downloading every original-resolution asset up front.
+
+Why: the portfolio needs a memorable spatial transition without making weak connections pay the cost of loading the whole gallery. The backdrop improves readability while the live background preserves the star-chart world's continuity.
+
+The site is intended for desktop and laptop presentation. Phone-specific adaptation is not a current product requirement; 4K desktop, 2.5K laptop, short desktop viewports, live resizing, and 125 percent browser zoom remain meaningful review cases.
+
 ## Portfolio Data and Authorship
 
 - `src/data/works.ts` is canonical. The UI does not parse Markdown in descriptions; use plain text and `\n\n` paragraph breaks.

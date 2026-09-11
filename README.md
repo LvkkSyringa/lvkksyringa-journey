@@ -49,7 +49,7 @@ Apply converts each image to a non-enlarged JPG inside 1920x1280 at quality 75, 
 
 - `src/app/page.tsx` - main experience flow and selected work state.
 - `src/components/StarChart/StarChart.tsx` - canvas star map, constellations, black hole, click/hover logic.
-- `src/components/GlassCard/GlassCard.tsx` - work detail modal.
+- `src/components/GlassCard/GlassCard.tsx` - preloaded three-card 3D work viewer and full-image view.
 - `src/components/AboutPanel.tsx` - about view cards.
 - `src/data/works.ts` - photography and game portfolio data.
 - `scripts/ingest-photo.mjs` - preview-first photo import and conversion workflow.
@@ -62,6 +62,7 @@ Apply converts each image to a non-enlarged JPG inside 1920x1280 at quality 75, 
 - Photography: 116 works in `public/images/`; 115 display camera/phone EXIF and one intentional composite omits EXIF.
 - Game Design: Vafi, Infinity, Safe Harbor, What's Under the Mask?, and After Light.
 - `src/data/works.ts` is the canonical portfolio-data source; use paragraph breaks (`\n\n`) for longer work descriptions.
+- `src/data/exif.json` is retained only as legacy/intermediate import data; edits there do not update the live site unless canonical `works.ts` is also updated.
 
 ## Handoff Notes
 

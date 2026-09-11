@@ -54,23 +54,26 @@ File: `src/components/StarChart/StarChart.tsx`
 - The starfield now has far, mid, and near layers. Near stars drift subtly and use restrained cool / purple / pink accents.
 - Main-view hover brightens the relevant constellation, stars, and label without drawing a surrounding ellipse.
 - The About entrance uses the original purple geometric black-hole design. Do not restart a cinematic / Interstellar-style black-hole redesign without a new approved visual direction; a prior attempt was explicitly rejected.
+- Canvas DPR is capped at 2. Canvas backing-store dimensions are updated when the render effect is established after viewport/state changes rather than on every animation frame.
+- Opening a work viewer hides the bottom constellation hint but does not pause the starfield or black-hole animation. The live Canvas continues to respond to viewport-size changes behind the frosted backdrop.
 
 ### GlassCard
 
 File: `src/components/GlassCard/GlassCard.tsx`
 
-- Work detail modal is now structured as:
-  - `work-modal-shell`
-  - `work-card-frame`
-  - `work-card-scroll`
-- The card stays inside a safe viewport area and scrolls internally when content is long.
-- Scrollbars are hidden while scroll behavior remains available.
+- The desktop work viewer presents the previous, active, and next works in a perspective stage. The active card is centered; adjacent cards sit dimmed and rotated on either side.
+- Side-card clicks, fixed arrow buttons, and keyboard ArrowLeft/ArrowRight navigate. Escape closes full-screen imagery first and then the viewer.
+- Framer Motion spring variants animate cards through `left`, `center`, `right`, `enter`, and `exit` positions.
+- A frosted modal backdrop uses blur, reduced brightness, and restrained purple illumination while leaving the Canvas animation live underneath.
+- The active card scrolls internally for long content; side-card content is non-interactive until selected. Visual scrollbars remain hidden.
+- Images use `next/image`. Photo clicks open a full-screen contained image; game logos remain contained inside a shorter media region.
+- Preloading is staged rather than gallery-wide:
+  - Active image: optimized 1920 px request at high priority.
+  - Immediate previous/next: optimized 1920 px warmup after the active image resolves.
+  - Second previous/next: 640 px warmup during browser idle time.
+  - Second-neighbor warmup is skipped when Save-Data is active or the reported connection is `slow-2g`/`2g`.
 - Photo/game descriptions support paragraph breaks through `whitespace-pre-line`.
-- Metadata rendering was split:
-  - Standard metadata stays as full-width rows.
-  - Compact photo exposure metadata uses two columns: `Aperture`, `Shutter`, `ISO`, `Focal`.
-- First-column compact metadata values align with the value column used by `Date`, `Camera`, and `Lens`.
-- Long metadata values, especially `Innovation`, wrap naturally in the value column.
+- Standard metadata stays in full-width rows. Compact exposure metadata uses two columns for `Aperture`, `Shutter`, `ISO`, and `Focal`; long values wrap naturally.
 
 ### AboutPanel
 
@@ -95,15 +98,19 @@ Reusable classes:
 - `.glass-hint`
 - `.hide-scrollbar`
 - `.work-modal-shell`
-- `.work-card-frame`
+- `.work-modal-backdrop`
+- `.work-carousel-stage`
+- `.work-carousel-card`
+- `.work-carousel-surface`
 - `.work-card-scroll`
+- `.carousel-nav`
 
 Responsive rules cover:
 
 - Hiding right-side star notes on smaller or shorter viewports.
 - About-panel vertical layout.
 - Compact glass tags.
-- Compact work-card media height.
+- Short-height desktop work-card media and carousel height.
 
 ## Photo Ingest Pipeline
 
@@ -215,13 +222,15 @@ Recommended metadata field mapping:
 - Preserve the existing poetic, quiet, glass-and-starlight tone.
 - Do not turn the site into a heavy sci-fi VFX demo.
 - Keep the first screen as the actual experience, not a landing page.
+- Treat the site as a desktop/laptop portfolio. Phone adaptation is not currently required.
 - Any visual upgrade should improve:
   - reviewer clarity
   - symbolic meaning
   - interaction affordance
   - cross-screen stability
 - Test compact windows before accepting a visual pass:
-  - 13-inch laptop scale
+  - 4K desktop and 2.5K laptop displays
   - narrow browser window
   - short-height viewport
   - browser zoom around 125 percent
+  - live viewport resizing while a work viewer is open
