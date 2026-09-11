@@ -1339,7 +1339,7 @@ const photoWorks: Work[] =
   },
   {
     "id": "photo-202603155",
-    "title": "Circle of Life1轮回1",
+    "title": "Circle of Life1 轮回1",
     "description": "Macao, China",
     "tags": [
       "Wildlife"
@@ -1352,7 +1352,7 @@ const photoWorks: Work[] =
   },
   {
     "id": "photo-202603156",
-    "title": "Circle of Life2轮回2",
+    "title": "Circle of Life2 轮回2",
     "description": "Macao, China",
     "tags": [
       "Wildlife"

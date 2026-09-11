@@ -6,7 +6,7 @@ out/
 .env*.local
 *.heic
 *.HEIC
-dev-server.log
+dev-server*.log
 black-hole-*-check.png
 
 # Local photo-ingest drop zone. Keep originals and owner metadata out of Git.

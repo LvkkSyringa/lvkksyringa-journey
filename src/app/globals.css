@@ -140,7 +140,101 @@ body::-webkit-scrollbar {
 }
 
 .work-modal-shell {
-  padding: 5.5rem 1rem 4.75rem;
+  isolation: isolate;
+}
+
+.work-modal-backdrop {
+  z-index: 0;
+  border: 0;
+  background:
+    radial-gradient(circle at 50% 42%, rgba(112, 91, 165, 0.09), transparent 50%),
+    rgba(2, 5, 15, 0.48);
+  backdrop-filter: blur(16px) saturate(82%) brightness(0.66);
+  -webkit-backdrop-filter: blur(16px) saturate(82%) brightness(0.66);
+}
+
+.work-carousel-stage {
+  z-index: 1;
+  perspective: 1600px;
+  transform-style: preserve-3d;
+  pointer-events: none;
+}
+
+.work-carousel-card {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: min(42rem, 48vw);
+  height: min(76vh, 48.75rem);
+  transform-style: preserve-3d;
+  will-change: transform, opacity;
+  pointer-events: auto;
+}
+
+.work-carousel-card-side {
+  cursor: pointer;
+}
+
+.work-carousel-surface {
+  position: relative;
+  height: 100%;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.11);
+  border-top-color: rgba(255, 255, 255, 0.19);
+  border-radius: 24px;
+  background:
+    radial-gradient(ellipse at 50% 0%, rgba(255, 255, 255, 0.065), transparent 60%),
+    rgba(14, 17, 31, 0.78);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.07),
+    0 24px 80px rgba(0, 0, 0, 0.48),
+    0 4px 18px rgba(0, 0, 0, 0.28);
+  backface-visibility: hidden;
+}
+
+.work-carousel-surface-active {
+  backdrop-filter: blur(22px) saturate(135%);
+  -webkit-backdrop-filter: blur(22px) saturate(135%);
+}
+
+.work-carousel-surface-side {
+  background:
+    linear-gradient(110deg, rgba(255, 255, 255, 0.07), transparent 42%),
+    rgba(11, 14, 27, 0.92);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.06),
+    0 18px 55px rgba(0, 0, 0, 0.42);
+  filter: saturate(0.72) brightness(0.78);
+}
+
+.work-carousel-card-side .work-card-scroll {
+  pointer-events: none;
+  user-select: none;
+}
+
+.work-card-media-photo {
+  height: min(40vh, 26.25rem);
+}
+
+.work-card-media-game {
+  height: min(28vh, 16.25rem);
+}
+
+.carousel-nav {
+  position: fixed;
+  top: 50%;
+  z-index: 55;
+  transform: translateY(-50%);
+  padding: 0.75rem 1rem !important;
+  font-size: 1.875rem !important;
+}
+
+.carousel-nav-left {
+  left: 3vw;
+}
+
+.carousel-nav-right {
+  right: 3vw;
 }
 
 .work-card-frame {
@@ -208,17 +302,12 @@ body::-webkit-scrollbar {
 }
 
 @media (max-height: 760px) {
-  .work-modal-shell {
-    padding: 5rem 0.75rem 4rem;
+  .work-carousel-card {
+    height: 78vh;
   }
 
-  .work-card-frame,
-  .work-card-scroll {
-    max-height: calc(100vh - 9rem);
-  }
-
-  .work-card-media img {
-    max-height: 34vh;
+  .work-card-media-photo {
+    height: 34vh;
   }
 
   .glass-tag {
@@ -232,5 +321,11 @@ body::-webkit-scrollbar {
 
   .about-panel h2 {
     font-size: 2rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .work-carousel-card {
+    will-change: opacity;
   }
 }

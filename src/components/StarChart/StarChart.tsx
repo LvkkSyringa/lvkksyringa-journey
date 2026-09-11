@@ -335,7 +335,13 @@ export default function StarChart({ onSelectWork, isWorkOpen = false }: StarChar
     const canvas = canvasRef.current;
     if (!canvas) return;
     const ctx = canvas.getContext("2d")!;
-    const dpr = devicePixelRatio;
+    const dpr = Math.min(devicePixelRatio || 1, 2);
+    const { w, h } = size;
+    canvas.width = w * dpr;
+    canvas.height = h * dpr;
+    canvas.style.width = `${w}px`;
+    canvas.style.height = `${h}px`;
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
 
     const drawNeb = (nebs: NebulaData[]) => {
       nebs.forEach(n => {
@@ -502,10 +508,6 @@ export default function StarChart({ onSelectWork, isWorkOpen = false }: StarChar
 
     const render = (ts: number) => {
       const t = ts * 0.001;
-      const { w, h } = size;
-      canvas.width = w * dpr; canvas.height = h * dpr;
-      canvas.style.width = `${w}px`; canvas.style.height = `${h}px`;
-      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
 
       // 更新摄像机
       const anim = cameraAnimRef.current;
